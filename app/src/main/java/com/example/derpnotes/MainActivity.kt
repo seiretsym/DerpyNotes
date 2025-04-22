@@ -1,4 +1,4 @@
-package com.example.derpnotes
+package com.derpy.derpnotes
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -30,7 +30,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.cursoradapter.widget.CursorAdapter
-import com.example.derpnotes.FeedReaderContract.FeedEntry
+import com.derpy.derpnotes.FeedReaderContract.FeedEntry
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.derpnotes"
+    namespace = "com.derpy.derpnotes"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.derpnotes"
+        applicationId = "com.derpy.derpnotes"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
