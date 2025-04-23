@@ -118,7 +118,8 @@
         android:fadeScrollbars="false"
         android:isScrollContainer="false"
         android:nestedScrollingEnabled="false"
-        android:scrollbarStyle="outsideOverlay">
+        android:scrollbarStyle="outsideOverlay"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textHeader"

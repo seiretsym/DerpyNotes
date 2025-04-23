@@ -2,15 +2,12 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="Derpy_Notes.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-04-22T18:53:13.775066900Z">
+        <DropdownSelection timestamp="2025-04-23T01:43:03.897739800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=R5CX11MG82M" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\kerwi\.android\avd\Medium_Phone.avd" />
             </handle>
           </Target>
         </DropdownSelection>
