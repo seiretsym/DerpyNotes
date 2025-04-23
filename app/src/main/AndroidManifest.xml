@@ -10,7 +10,7 @@
         android:label="Derpy Notes"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DerpNotes"
+        android:theme="@style/Theme.DerpyNotes"
         tools:targetApi="35">
         <activity
             android:name=".MainActivity"

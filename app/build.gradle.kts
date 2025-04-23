@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.derpy.derpnotes"
+    namespace = "com.derpy.derpynotes"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.derpy.derpnotes"
+        applicationId = "com.derpy.derpynotes"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.00"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -1,4 +1,4 @@
-package com.example.derpnotes
+package com.derpy.derpynotes
 
 import org.junit.Test
 
