@@ -11,7 +11,9 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.text.Editable
+import android.text.Layout
 import android.text.TextWatcher
+import android.util.Log
 import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var listView: ListView
     lateinit var historyView: ViewGroup
     lateinit var infoBtn: Button
+    lateinit var mainHeader: TextView
 
     val dbHelper = FeedReaderDbHelper(this)
 
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun insertNote(note: String, fave: Boolean, date: String) {
+    fun insertNote(note: String, fave: Boolean, date: String, id: String) {
         val db = dbHelper.writableDatabase
 
         val values = ContentValues().apply {
@@ -60,7 +63,15 @@ class MainActivity : AppCompatActivity() {
             put(FeedEntry.COLUMN_NAME_DATE, date)
         }
 
-        val newRowId = db?.insert(FeedEntry.TABLE_NAME, "derpynotes", values)
+
+        if (id.length > 0) {
+            val updateValue = ContentValues().apply {
+                put(FeedEntry.COLUMN_NAME_NOTE, note)
+            }
+            val update = db?.update("derpynotes", updateValue, "_id=?", arrayOf(id))
+        } else {
+            val newRowId = db?.insert(FeedEntry.TABLE_NAME, "derpynotes", values)
+        }
     }
 
     fun getNotes(list: ListView){
@@ -83,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             sortOrder               // The sort order
         )
 
-        val cursorAdapter = NoteCursorAdapter(this, cursor, dbHelper, mainView, historyView, editText, textView, listView)
+        val cursorAdapter = NoteCursorAdapter(this, cursor, dbHelper, this@MainActivity)
         list.adapter = cursorAdapter
 
     }
@@ -100,6 +111,8 @@ class MainActivity : AppCompatActivity() {
         historyView = findViewById<ViewGroup>(R.id.historyFrame)
         listView = findViewById<ListView>(R.id.listView)
         infoBtn = findViewById<Button>(R.id.infoBtn)
+        mainHeader = findViewById<TextView>(R.id.mainHeader)
+        editText.setHint("")
 
         editText.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -121,41 +134,40 @@ class MainActivity : AppCompatActivity() {
         editText.setOnTouchListener (object: OnSwipeTouchListener(this) {
             override fun onSwipeLeft() {
                 if(editText.text.trim().length > 0) {
+                    Log.d("LOG", "hello?")
                     val timestamp = DateTimeFormatter
                         .ofPattern("yyyy-MM-dd HH:mm:ss")
                         .withZone(ZoneOffset.UTC)
                         .format(Instant.now())
-                    insertNote(editText.text.trim().toString(), false, timestamp)
+                    insertNote(editText.text.trim().toString(), false, timestamp, editText.hint.toString())
                 }
+                Log.d("LOG", "hello??")
                 editText.setText("")
                 textView.setText("")
+                editText.setHint("")
+                mainHeader.setText("Derpy Notes")
             }
             override fun onSwipeTop() {
                 hideKeyboard(mainView)
                 historyView.isVisible = true
                 mainView.isGone = true
+                listView.requestFocus()
                 getNotes(listView)
             }
         })
 
         infoBtn.setOnClickListener (View.OnClickListener() {
-                editText.setText("")
-                textView.setText("")
+            editText.setText("")
+            editText.setHint("")
+            textView.setText("")
+            mainHeader.setText("Derpy Notes")
         })
 
         listView.setOnTouchListener (object: OnSwipeTouchListener(this) {
             override fun onSwipeLeft() {
                 historyView.isGone = true
                 mainView.isVisible = true
-            }
-            override fun onSwipeTop() {
-                listView.scrollY
-            }
-            override fun onSwipeBottom() {
-                listView.scrollY
-            }
-            override fun onSwipeRight() {
-                false
+                editText.requestFocus()
             }
         })
 
@@ -187,8 +199,6 @@ class MainActivity : AppCompatActivity() {
                 WindowInsetsCompat.Type.systemBars() + WindowInsetsCompat.Type.displayCutout()
             )
 
-            var tempHeight = listView.measuredHeight
-
             val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
             val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
 
@@ -211,14 +221,16 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-class NoteCursorAdapter(context: Context, cursor: Cursor?, dbHelper: FeedReaderDbHelper, mainView: ViewGroup, historyView: ViewGroup, editText: EditText, textView: TextView, listView: ListView) : CursorAdapter(context, cursor, 0) {
+class NoteCursorAdapter(context: Context, cursor: Cursor?, dbHelper: FeedReaderDbHelper, view: MainActivity) : CursorAdapter(context, cursor, 0) {
     val helper = dbHelper
     val db = dbHelper.writableDatabase
-    val mV = mainView
-    val hV = historyView
-    val eT = editText
-    val tV = textView
-    val lV = listView
+    val mV = view.findViewById<ViewGroup>(R.id.mainFrame)
+    val hV = view.findViewById<ViewGroup>(R.id.historyFrame)
+    val eT = view.findViewById<EditText>(R.id.editText)
+    val tV = view.findViewById<TextView>(R.id.textView)
+    val lV = view.findViewById<ListView>(R.id.listView)
+    val mH = view.findViewById<TextView>(R.id.mainHeader)
+    val main = view
 
     // The newView method is used to inflate a new view and return it,
     // you don't bind any data to the view at this point.
@@ -237,6 +249,7 @@ class NoteCursorAdapter(context: Context, cursor: Cursor?, dbHelper: FeedReaderD
         val body: String? = cursor.getString(cursor.getColumnIndexOrThrow("note"))
         var star: Int? = cursor.getInt(cursor.getColumnIndexOrThrow("fave"))
         val id: Int = cursor.getInt(cursor.getColumnIndexOrThrow("_id"))
+        val date: String? = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"))
         // Populate fields with extracted properties
         note.setText(body)
         if (star != 0) {
@@ -271,7 +284,7 @@ class NoteCursorAdapter(context: Context, cursor: Cursor?, dbHelper: FeedReaderD
                         )
 
                         val cursorAdapter =
-                            NoteCursorAdapter(context, cursor, helper, mV, hV, eT, tV, lV)
+                            NoteCursorAdapter(context, cursor, helper, main)
                         lV.adapter = cursorAdapter
                         db.setTransactionSuccessful()
                     }
@@ -282,10 +295,13 @@ class NoteCursorAdapter(context: Context, cursor: Cursor?, dbHelper: FeedReaderD
 
 
         note.setOnClickListener (View.OnClickListener {
-                tV.setText(body)
-                eT.setText(body)
-                mV.isVisible = true
-                hV.isGone = true
+            tV.setText(body)
+            eT.setText(body)
+            eT.setHint(id.toString())
+            eT.requestFocus()
+            mH.setText(date)
+            mV.isVisible = true
+            hV.isGone = true
         })
 
         fave.setOnClickListener (View.OnClickListener() {
@@ -326,8 +342,8 @@ open class OnSwipeTouchListener(context: Context) : View.OnTouchListener {
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
 
-        private val SWIPE_THRESHOLD = 300
-        private val SWIPE_VELOCITY_THRESHOLD = 300
+        private val SWIPE_THRESHOLD = 75
+        private val SWIPE_VELOCITY_THRESHOLD = 75
 
         override fun onDown(e1: MotionEvent): Boolean {
             return false
