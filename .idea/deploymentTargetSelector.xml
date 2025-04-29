@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="Derpy_Notes.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-04-23T01:43:03.897739800Z">
+        <DropdownSelection timestamp="2025-04-29T19:32:41.235619500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\kerwi\.android\avd\Medium_Phone.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=R5CX11MG82M" />
             </handle>
           </Target>
         </DropdownSelection>

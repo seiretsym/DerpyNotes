@@ -23,9 +23,9 @@
 
             <TextView
                 android:id="@+id/mainHeader"
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="50"
                 android:background="#000000"
                 android:paddingLeft="10dp"
                 android:text="Derpy Notes"
@@ -83,6 +83,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="1.0"
             tools:layout_editor_absoluteX="-30dp" />
 
         <TextView
@@ -100,13 +101,12 @@
             android:paddingRight="10dp"
             android:scrollHorizontally="false"
             android:singleLine="false"
-            android:text="text"
             android:textSize="112sp"
             android:textStyle="bold"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.0"
             tools:layout_editor_absoluteX="26dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,21 +121,56 @@
         android:scrollbarStyle="outsideOverlay"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/textHeader"
+        <LinearLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoSizeMaxTextSize="100sp"
-            android:autoSizeMinTextSize="12sp"
-            android:autoSizeStepGranularity="1sp"
+            android:layout_height="40dp"
             android:background="#000000"
-            android:gravity="start|center_horizontal"
-            android:paddingLeft="10dp"
-            android:text="History"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="1sp"
+                android:background="#000000"
+                android:gravity="start|center_horizontal"
+                android:paddingLeft="10dp"
+                android:text="History"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/backBtn"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:padding="0sp"
+                android:paddingStart="0sp"
+                android:paddingLeft="0sp"
+                android:paddingTop="0sp"
+                android:paddingEnd="0sp"
+                android:paddingRight="0sp"
+                android:paddingBottom="0sp"
+                android:textColor="#ffffff"
+                android:textColorLink="#ffffff"
+                android:textSize="28sp"
+                app:icon="@android:drawable/ic_menu_revert"
+                app:iconGravity="textStart"
+                app:iconPadding="0sp"
+                app:iconSize="40dp"
+                app:iconTint="#ffffff"
+                app:iconTintMode="multiply" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/listView"
@@ -144,9 +179,9 @@
             android:fastScrollEnabled="true"
             android:overScrollMode="never"
             android:paddingBottom="40dp"
-            android:scrollbarStyle="outsideOverlay"
+            android:scrollbarStyle="insideOverlay"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

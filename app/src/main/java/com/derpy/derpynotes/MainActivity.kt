@@ -57,19 +57,17 @@ class MainActivity : AppCompatActivity() {
     fun insertNote(note: String, fave: Boolean, date: String, id: String) {
         val db = dbHelper.writableDatabase
 
-        val values = ContentValues().apply {
-            put(FeedEntry.COLUMN_NAME_NOTE, note)
-            put(FeedEntry.COLUMN_NAME_FAVE, fave)
-            put(FeedEntry.COLUMN_NAME_DATE, date)
-        }
-
-
         if (id.length > 0) {
-            val updateValue = ContentValues().apply {
+            val values = ContentValues().apply {
                 put(FeedEntry.COLUMN_NAME_NOTE, note)
             }
-            val update = db?.update("derpynotes", updateValue, "_id=?", arrayOf(id))
+            val update = db?.update("derpynotes", values, "_id=?", arrayOf(id))
         } else {
+            val values = ContentValues().apply {
+                put(FeedEntry.COLUMN_NAME_NOTE, note)
+                put(FeedEntry.COLUMN_NAME_FAVE, fave)
+                put(FeedEntry.COLUMN_NAME_DATE, date)
+            }
             val newRowId = db?.insert(FeedEntry.TABLE_NAME, "derpynotes", values)
         }
     }
@@ -112,6 +110,7 @@ class MainActivity : AppCompatActivity() {
         listView = findViewById<ListView>(R.id.listView)
         infoBtn = findViewById<Button>(R.id.infoBtn)
         mainHeader = findViewById<TextView>(R.id.mainHeader)
+        val backBtn = findViewById<Button>(R.id.backBtn)
         editText.setHint("")
 
         editText.addTextChangedListener(object: TextWatcher {
@@ -120,14 +119,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                false
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 textView.setText(s.toString())
                 var size = textView.textSize
                 var sp = size / getResources().getDisplayMetrics().density
                 editText.setTextSize(sp)
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                false
             }
         })
 
@@ -161,6 +160,12 @@ class MainActivity : AppCompatActivity() {
             editText.setHint("")
             textView.setText("")
             mainHeader.setText("Derpy Notes")
+        })
+
+        backBtn.setOnClickListener (View.OnClickListener() {
+            historyView.isGone = true
+            mainView.isVisible = true
+            editText.requestFocus()
         })
 
         listView.setOnTouchListener (object: OnSwipeTouchListener(this) {
