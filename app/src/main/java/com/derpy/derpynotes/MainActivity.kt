@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         editText.setOnTouchListener (object: OnSwipeTouchListener(this) {
-            override fun onSwipeLeft() {
+            override fun onSwipeLeft(): Boolean {
                 if(editText.text.trim().length > 0) {
                     Log.d("LOG", "hello?")
                     val timestamp = DateTimeFormatter
@@ -145,13 +145,15 @@ class MainActivity : AppCompatActivity() {
                 textView.setText("")
                 editText.setHint("")
                 mainHeader.setText("Derpy Notes")
+                return true
             }
-            override fun onSwipeTop() {
+            override fun onSwipeTop(): Boolean {
                 hideKeyboard(mainView)
                 historyView.isVisible = true
                 mainView.isGone = true
                 listView.requestFocus()
                 getNotes(listView)
+                return true
             }
         })
 
@@ -169,10 +171,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         listView.setOnTouchListener (object: OnSwipeTouchListener(this) {
-            override fun onSwipeLeft() {
+            override fun onSwipeLeft(): Boolean {
                 historyView.isGone = true
                 mainView.isVisible = true
                 editText.requestFocus()
+                return true
             }
         })
 
@@ -362,19 +365,17 @@ open class OnSwipeTouchListener(context: Context) : View.OnTouchListener {
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffX > 0) {
-                            onSwipeRight()
+                           result = onSwipeRight()
                         } else {
-                            onSwipeLeft()
+                           result = onSwipeLeft()
                         }
-                        result = true
                     }
                 } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffY > 0) {
-                        onSwipeBottom()
+                        result = onSwipeBottom()
                     } else {
-                        onSwipeTop()
+                        result = onSwipeTop()
                     }
-                    result = true
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
@@ -383,13 +384,13 @@ open class OnSwipeTouchListener(context: Context) : View.OnTouchListener {
         }
     }
 
-    open fun onSwipeLeft() {}
+    open fun onSwipeLeft(): Boolean { return false }
 
-    open fun onSwipeRight() {}
+    open fun onSwipeRight(): Boolean { return false }
 
-    open fun onSwipeTop() {}
+    open fun onSwipeTop(): Boolean { return false }
 
-    open fun onSwipeBottom() {}
+    open fun onSwipeBottom(): Boolean { return false }
 }
 
 // sqlite stuff
