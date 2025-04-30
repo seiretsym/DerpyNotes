@@ -13,6 +13,7 @@ import android.provider.BaseColumns
 import android.text.Editable
 import android.text.Layout
 import android.text.TextWatcher
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.GestureDetector
 import android.view.LayoutInflater
@@ -135,12 +136,11 @@ class MainActivity : AppCompatActivity() {
                 if(editText.text.trim().length > 0) {
                     Log.d("LOG", "hello?")
                     val timestamp = DateTimeFormatter
-                        .ofPattern("yyyy-MM-dd HH:mm:ss")
-                        .withZone(ZoneOffset.UTC)
+                        .ofPattern("M/dd/yy h:mm a")
+                        .withZone(ZoneOffset.systemDefault())
                         .format(Instant.now())
                     insertNote(editText.text.trim().toString(), false, timestamp, editText.hint.toString())
                 }
-                Log.d("LOG", "hello??")
                 editText.setText("")
                 textView.setText("")
                 editText.setHint("")
