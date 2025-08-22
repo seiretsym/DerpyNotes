@@ -119,8 +119,9 @@
         android:fadeScrollbars="false"
         android:isScrollContainer="false"
         android:nestedScrollingEnabled="false"
-        android:scrollbarStyle="outsideOverlay"
-        android:visibility="gone">
+        android:scrollbarStyle="insideInset"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
             android:id="@+id/layout"
@@ -177,11 +178,12 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:fastScrollEnabled="true"
-            android:nestedScrollingEnabled="false"
+            android:fastScrollAlwaysVisible="false"
+            android:fastScrollEnabled="false"
             android:overScrollMode="never"
             android:paddingBottom="40dp"
-            android:scrollbarStyle="insideOverlay"
+            android:scrollIndicators="none"
+            android:scrollbarStyle="insideInset"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout" />
 

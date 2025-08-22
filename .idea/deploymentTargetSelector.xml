@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="Derpy_Notes.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-04-29T19:32:41.235619500Z">
+        <DropdownSelection timestamp="2025-05-31T17:19:56.739027300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="PhysicalDevice" identifier="serial=R5CX11MG82M" />

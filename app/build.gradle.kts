@@ -11,8 +11,8 @@ android {
         applicationId = "com.derpy.derpynotes"
         minSdk = 30
         targetSdk = 35
-        versionCode = 8
-        versionName = "1.08"
+        versionCode = 9
+        versionName = "1.09"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
